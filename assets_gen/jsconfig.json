@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+        "strict": true,
+        "noImplicitAny": true,
+        "strictFunctionTypes": true,
+        "strictPropertyInitialization": true,
+        "strictBindCallApply": true,
+        "noImplicitThis": true,
+        "noImplicitReturns": true,
+        "alwaysStrict": true,
+        "esModuleInterop": true,
+        "checkJs": true,
+        "allowJs": true,
+        "downlevelIteration": true,
+        "jsx": "preserve",
+        "typeRoots": [
+            "./node_modules/@types"
+        ]
+    },
+}
