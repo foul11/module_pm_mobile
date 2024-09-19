@@ -1,5 +1,5 @@
 import React from 'react';
-// import fileSaver from 'file-saver';
+import fileSaver from 'file-saver';
 
 import { useDispatch } from 'react-redux';
 import { openDownloadTasks, openUploadTasks } from '../store/popup';
@@ -32,8 +32,17 @@ export default function Header() {
                 </IconButton>
                 
                 <IconButton
+                    onClick={() => {
+                        let link = document.createElement('a');
+                        
+                        link.setAttribute('href', 'data:application/json;base64,' + btoa(JSON.stringify(tasks, undefined, 4)));
+                        link.setAttribute('download', 'save.json');
+                        
+                        link.click();
+                    }}
+                    // onClick={() => window.open('data:application/octet-stream;base64,' + btoa(JSON.stringify(tasks, undefined, 4)), 'save.json')}
                     // onClick={() => fileSaver(new Blob([JSON.stringify(tasks, undefined, 4)], { type: 'application/json' }), 'tasks.json')}
-                    onClick={() => dispatch(openDownloadTasks({ text: JSON.stringify(tasks, undefined, 4) }))}
+                    // onClick={() => dispatch(openDownloadTasks({ text: JSON.stringify(tasks, undefined, 4) }))}
                 >
                     <DownloadIcon />
                 </IconButton>
