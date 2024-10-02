@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { useSelector } from '../../utils';
 import { upload } from '../../store/tasks';
 import { openUploadTasks } from '../../store/popup';
-import { selectPopupUploadTask } from '../../store';
+import { selectPopupUploadTask, useAppDispatch } from '../../store';
 
 import { Button, Divider, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
@@ -13,7 +13,7 @@ import PopupBase from './PopupBase';
 
 export default function UploadTask() {
     const popupUploadTask = useSelector(selectPopupUploadTask);
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     
     const [ jsonText, setJsonText ] = useState('');
     

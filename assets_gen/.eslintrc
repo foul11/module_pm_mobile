@@ -251,5 +251,8 @@
     
     
     "compat/compat": "warn",
-  }
+  },
+  // "browserslist": [
+  //   "> 1%"
+  // ]
 }

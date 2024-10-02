@@ -4,7 +4,7 @@ import { Box } from '@mui/system';
 import { IconButton, Paper, TextField } from '@mui/material';
 
 import { useDispatch } from 'react-redux';
-import { uuidv4 } from '../utils';
+import { useSelector, uuidv4 } from '../utils';
 
 import { editTask } from '../store/popup';
 
@@ -13,6 +13,7 @@ import AddIcon from '@mui/icons-material/Add';
 
 export default function Tasks({ }) {
     const dispatch = useDispatch();
+    const tasks = useSelector((state) => state.tasks.tasks);
     
     const [ filter, setFilter ] = useState('');
     
@@ -28,7 +29,7 @@ export default function Tasks({ }) {
                 />
                 
                 <IconButton
-                    onClick={() => dispatch(editTask({ id: uuidv4() }))}
+                    onClick={() => dispatch(editTask({ id: tasks.length + 1 }))}
                 >
                     <AddIcon />
                 </IconButton>

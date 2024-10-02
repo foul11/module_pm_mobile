@@ -8,7 +8,7 @@ import { createSlice } from '@reduxjs/toolkit';
 /**
  * @typedef {{
  *  EditTask: {
- *   id: string | null,
+ *   id: number | null,
  *  },
  *  UploadTask: {
  *   open: boolean,

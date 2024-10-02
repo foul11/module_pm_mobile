@@ -27,3 +27,47 @@ export function useSelector(selector, eqFunc = undefined) {
  *  payload: T
  * }} Action
  */
+
+
+const APILink = new URL('/api/', 'http://10.0.2.2:3005');
+
+/** @param {string} link */
+export function apiUrl(link) {
+    if (link[0] == '/')
+        link = link.substring(1);
+    
+    const url = new URL(link, APILink);
+    
+    return url.toString();
+}
+
+/**
+ * @param {string} link
+ * @param {RequestInit} request
+ */
+export function api(link, request) {
+    request = request ?? {};
+    const method = request?.method;
+    
+    if (method && method.toUpperCase() != 'GET') {
+        const headers = request.headers;
+        const body = request.body;
+        
+        let isContentType = false;
+        
+        if (headers && body) {
+            for (const [key] of Object.entries(headers)) {
+                if (key.toLocaleLowerCase() == 'content-type') {
+                    isContentType = true;
+                }
+            }
+            
+            if (!isContentType) // @ts-ignore
+                headers['Content-Type'] = 'application/json';
+        } else if (body) {
+            request.headers = { 'Content-Type': 'application/json' };
+        }
+    }
+    
+    return fetch(apiUrl(link), request);
+}

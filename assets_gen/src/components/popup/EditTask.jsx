@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { useSelector } from '../../utils';
 import { useDispatch } from 'react-redux';
-import { selectPopupEditTask, selectTasks } from '../../store';
+import { selectPopupEditTask, selectTasks, useAppDispatch } from '../../store';
 import { addOrUpdate, selectTask } from '../../store/tasks';
 import { editTask } from '../../store/popup';
 
@@ -14,17 +14,18 @@ import PopupBase from './PopupBase';
 export default function EditTask() {
     const tasks = useSelector(selectTasks);
     const popupEditTask = useSelector(selectPopupEditTask);
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     
     const open    = popupEditTask.id !== null;
     const taskIdx = popupEditTask.id !== null && selectTask(tasks, popupEditTask.id);
-    const task    = taskIdx !== false && tasks[taskIdx];
+    const task    = taskIdx !== false && tasks.tasks[taskIdx];
     
     const [ name, setName ] = useState(task && task.name || '');
     const [ desc, setDesc ] = useState(task && task.desc || '');
     
-    const dispatchUpdateAndClose = (/** @type {{ id?: string, name?: string, desc?: string }} */ _task) => {
+    const dispatchUpdateAndClose = (/** @type {{ id?: number, name?: string, desc?: string }} */ _task) => {
         console.log(_task);
+        
         dispatch(addOrUpdate({ id: _task.id, name: _task.name, desc: _task.desc }));
         dispatch(editTask({ id: null }));
     };

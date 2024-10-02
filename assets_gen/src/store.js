@@ -3,40 +3,76 @@ import { configureStore } from '@reduxjs/toolkit';
 import tasksSlice from './store/tasks';
 import popupSlice from './store/popup';
 
-function reHydrateStore() {
-    let tasks = [];
+// import { useDispatch } from 'react-redux';
+
+// function reHydrateStore() {
+//     let tasks = [];
     
-    if (localStorage && localStorage.getItem('store_todo_app') !== null) {
-        tasks = JSON.parse(localStorage.getItem('store_todo_app') ?? '[]');
-    }
+//     if (localStorage.getItem('store_todo_app') !== null) {
+//         tasks = JSON.parse(localStorage.getItem('store_todo_app') ?? '[]');
+//     }
     
-    return {
-        tasks,
-    };
-}
+//     return {
+//         tasks,
+//     };
+// }
 
 export const reducer = {
     tasks: tasksSlice,
     popup: popupSlice,
 }
 
-export default configureStore({
+export const store = configureStore({
     reducer,
-    preloadedState: reHydrateStore(),
+    // preloadedState: reHydrateStore(),
     
-    middleware(gDM) {
-        return gDM().concat(({ getState }) => {
-            return next => action => {
-                const result = next(action);
+    // middleware(gDM) {
+    //     return gDM().concat(({ getState }) => {
+    //         return next => action => {
+    //             const result = next(action);
                 
-                if (localStorage && action.type.startsWith('tasks/'))
-                    localStorage.setItem('store_todo_app', JSON.stringify(getState().tasks));
+    //             if (action.type.startsWith('tasks/'))
+    //                 localStorage.setItem('store_todo_app', JSON.stringify(getState().tasks));
                 
-                return result;
-            };
-        });
-    },
+    //             return result;
+    //         };
+    //     });
+    // },
 });
+
+/**
+ * @typedef {typeof store['dispatch']} dispatch
+ * @typedef {import('./utils').reducers} RootState
+ * @typedef {import('@reduxjs/toolkit').ThunkDispatch<RootState, any, import('@reduxjs/toolkit').AnyAction>} AppThunkDispatch
+ * @typedef {Omit<import('@reduxjs/toolkit').Store<RootState, import('@reduxjs/toolkit').AnyAction>, "dispatch"> & {
+ *   dispatch: AppThunkDispatch;
+ * }} AppStore
+ */
+
+
+// 1. Get the root state's type from reducers
+// export type RootState = ReturnType<typeof reducers>;
+
+// 2. Create a type for thunk dispatch
+// export type AppThunkDispatch = ThunkDispatch<RootState, any, AnyAction>;
+
+// 3. Create a type for store using RootState and Thunk enabled dispatch
+// export type AppStore = Omit<Store<RootState, AnyAction>, "dispatch"> & {
+//   dispatch: AppThunkDispatch;
+// };
+
+//4. create the store with your custom AppStore
+// export const store: AppStore = configureStore();
+
+// you can also create some redux hooks using the above explicit types
+// export const useAppDispatch = () => useDispatch<AppThunkDispatch>();
+// export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
+
+
+// export const useAppDispatch = () => /** @type {dispatch} */ (useDispatch)();
+export const useAppDispatch = () => store.dispatch;
+
+export default store;
 
 export const selectTasks = (/** @type {import('./utils').reducers} */ state) => state.tasks;
 export const selectPopup = (/** @type {import('./utils').reducers} */ state) => state.popup;

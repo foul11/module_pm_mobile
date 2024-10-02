@@ -22,6 +22,7 @@ import android.webkit.DownloadListener
 import android.webkit.URLUtil
 import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
+import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
@@ -198,6 +199,7 @@ fun ComposeWrappedWebView() {
                 @Suppress("SetJavaScriptEnabled")
                 settings.javaScriptEnabled = true
                 settings.allowFileAccess = true;
+                settings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW;
 
                 webViewClient = object : WebViewClient() {
                     override fun shouldInterceptRequest(
